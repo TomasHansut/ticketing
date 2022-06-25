@@ -1,0 +1,23 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+profiles:
+  - name: minikube
+    activation:
+      - kubeContext: minikube
+      - env: ENV=local_dev
+    deploy:
+      kubectl:
+        manifests:
+          - ./infra/k8s/*
+    build:
+      local:
+        push: false
+      artifacts:
+        - image: piestt/auth
+          context: auth
+          docker:
+            dockerfile: Dockerfile
+          sync:
+            manual:
+              - dest: .
+                src: 'src/**/*.ts'
