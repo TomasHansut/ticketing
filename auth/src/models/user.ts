@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { Password } from "../services/password";
+import { PasswordManager } from "../services/password-manager";
 
 // An interface that discribes the properties
 // that are required to create a new User
@@ -29,14 +29,24 @@ const userSchema = new mongoose.Schema({
 	password: {
 		type: String,
 		required: true,
-	},
+	}},{
+	toJSON: {
+		// Change response from "_id" to "id"
+		// Delete password, version key and _id from response 
+		transform(doc, ret) {
+			ret.id = ret._id;
+			delete ret._id;
+			delete ret.password;
+			delete ret.__v;
+		}
+	}
 });
 
 // User Document before saving
 userSchema.pre("save", async function (done) {
 	// isModified returns true even if is newly created
 	if (this.isModified("password")) {
-		const hashed = await Password.toHash(this.get("password"));
+		const hashed = await PasswordManager.toHash(this.get("password"));
 		this.set("password", hashed);
 	}
     done();

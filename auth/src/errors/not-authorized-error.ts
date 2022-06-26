@@ -1,21 +1,20 @@
 import { CustomError } from "./custom-errors";
 
 /**
- ** Error handling for 404
+ ** Error handling for not authorized user
  ** Extentds abstract class CustomError
  */
-export class NotFoundError extends CustomError {
-    reason = 'Not Found'
-    statusCode = 404;
+export class NotAuthorizedError extends CustomError {
+    statusCode: number = 401;
 
     constructor() {
-        super('Route not found');
+        super('Not authorized');
 
         // Only because we are extending a build in class
         Object.setPrototypeOf(this, CustomError.prototype);
     }
     // Serialize errors to common structure
-    serializeErrors = () => {
-        return [{ message: this.reason }];
+    serializeErrors() {
+        return [{ message: 'Not authorized' }];
     }
 }
