@@ -1,1 +1,1 @@
-# system for buying tickets (React/ExpressJs/Kubernetes) 
+# system for buying tickets (React(NextJS)/Express/Kubernetes) 
