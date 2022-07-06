@@ -29,3 +29,11 @@ profiles:
             manual:
               - dest: .
                 src: '**/*.js'
+        - image: piestt/tickets
+          context: tickets
+          docker:
+            dockerfile: Dockerfile
+          sync:
+            manual:
+              - dest: .
+                src: 'src/**/*.ts'
