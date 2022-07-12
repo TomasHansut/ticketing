@@ -3,8 +3,10 @@ import 'express-async-errors';
 import { json } from 'body-parser';
 import mongoose from 'mongoose';
 import cookieSession from 'cookie-session';
-import { errorHandler, NotFoundError } from '@p13577-tickets/common';
+import { errorHandler, NotFoundError, currentUser } from '@p13577-tickets/common';
+
 import { createTicketRouter } from './routes/new';
+import { showTicketRouter } from './routes/show';
 
 const app = express();
 app.set('trust proxy', true);
@@ -16,6 +18,10 @@ app.use(
         secure: process.env.NODE_ENV !== 'test'
     })
 );
+
+// Cookie session need to be set first
+app.use(currentUser);
+app.use(showTicketRouter);
 
 // Routes for the app
 app.use(createTicketRouter);
